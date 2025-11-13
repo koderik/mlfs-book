@@ -289,9 +289,13 @@ def check_file_path(file_path):
 
 def backfill_predictions_for_monitoring(weather_fg, air_quality_df, monitor_fg, model):
     features_df = weather_fg.read()
+    # append air_quality_df to features_df to get lag features
+    features_df = pd.merge(features_df, air_quality_df[['date', 'lag_1_pm25', 'lag_2_pm25', 'lag_3_pm25']], on="date", how="left")
     features_df = features_df.sort_values(by=['date'], ascending=True)
     features_df = features_df.tail(10)
-    features_df['predicted_pm25'] = model.predict(features_df[['temperature_2m_mean', 'precipitation_sum', 'wind_speed_10m_max', 'wind_direction_10m_dominant']])
+    features_df['predicted_pm25'] = model.predict(features_df[['lag_1_pm25', 'lag_2_pm25', 'lag_3_pm25', 'temperature_2m_mean', 'precipitation_sum', 'wind_speed_10m_max', 'wind_direction_10m_dominant']])
+    # convert to double
+    features_df['predicted_pm25'] = features_df['predicted_pm25'].astype('float64')
     df = pd.merge(features_df, air_quality_df[['date','pm25','street','country']], on="date")
     df['days_before_forecast_day'] = 1
     hindcast_df = df
