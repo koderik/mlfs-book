@@ -1,6 +1,10 @@
 name: air-quality-daily
 
 on:
+  push:
+    branches:
+      - a-level
+      - main
   workflow_dispatch:
     schedule:
       cron: '11 6 * * *'
