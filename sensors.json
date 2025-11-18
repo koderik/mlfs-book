@@ -11,8 +11,6 @@
     },
     {"street":"Fichtelgebirgstraße",
         "url":"https://api.waqi.info/feed/A66394"
-    },
-    {"street":"Hemauerstraße",
-"url":"https://api.waqi.info/feed/A226285"}
+    }
     ]
 }
