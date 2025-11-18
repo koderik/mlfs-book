@@ -141,23 +141,34 @@ def trigger_request(url:str):
     return data
 
 
-def get_pm25(aqicn_url: str, country: str, city: str, street: str, day: datetime.date, AQI_API_KEY: str):
+def get_pm25(aqicn_url: str, country: str, city: str, street: str, day: datetime.date, AQI_API_KEY: str, id=None):
     """
     Returns DataFrame with air quality (pm25) as dataframe
     """
-    # The API endpoint URL
-    url = f"{aqicn_url}/?token={AQI_API_KEY}"
 
-    # Make a GET request to fetch the data from the API
-    data = trigger_request(url)
+    if id is not None:
+        url = f"{id}/?token={AQI_API_KEY}"
+        print(f"Fetching AQI data from URL with ID: {url}")
+        data = trigger_request(url)
+    # The API endpoint URL
+    if data["data"] == "Unknown station" or id is None:
+        url = f"https://api.waqi.info/feed/{country}/{city}/{street}/?token={AQI_API_KEY}"
+        print(f"Fetching AQI data from URL: {url}")
+
+        # Make a GET request to fetch the data from the API
+        data = trigger_request(url)
+
+    
 
     # if we get 'Unknown station' response then retry with city in url
     if data['data'] == "Unknown station":
         url1 = f"https://api.waqi.info/feed/{country}/{street}/?token={AQI_API_KEY}"
+        print(f"Retrying with URL: {url1}")
         data = trigger_request(url1)
-
+    
     if data['data'] == "Unknown station":
         url2 = f"https://api.waqi.info/feed/{country}/{city}/{street}/?token={AQI_API_KEY}"
+        print(f"Retrying with URL: {url2}")
         data = trigger_request(url2)
 
 

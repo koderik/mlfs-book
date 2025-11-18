@@ -1,0 +1,18 @@
+{
+    "sensors":[
+        {"street":"Steyrerweg",
+        "url":"https://api.waqi.info/feed/A191545"
+    },
+        {"street":"Pfeilstraße",
+        "url":"https://api.waqi.info/feed/A474136"
+    },
+    {"street":"Hafnersteig",
+        "url":"https://api.waqi.info/feed/A469291"
+    },
+    {"street":"Fichtelgebirgstraße",
+        "url":"https://api.waqi.info/feed/A66394"
+    },
+    {"street":"Hemauerstraße",
+"url":"https://api.waqi.info/feed/A226285"}
+    ]
+}
